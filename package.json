@@ -11,5 +11,13 @@
     "dates"
   ],
   "author": "Michael Burchett",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaellburchett/expiration-date-utility.git"
+  },
+  "bugs": {
+    "url": "https://github.com/michaellburchett/expiration-date-utility/issues"
+  },
+  "homepage": "https://github.com/michaellburchett/expiration-date-utility#readme"
 }
