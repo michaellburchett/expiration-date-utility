@@ -1,0 +1,15 @@
+{
+  "name": "expiration-date-utility",
+  "version": "1.0.0",
+  "description": "An application that assists users in creating, manipulating, and assessing expirtion dates",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "expiration",
+    "dates"
+  ],
+  "author": "Michael Burchett",
+  "license": "ISC"
+}
