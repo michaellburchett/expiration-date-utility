@@ -4,7 +4,7 @@
   "description": "An application that assists users in creating, manipulating, and assessing expirtion dates",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [
     "expiration",
@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/michaellburchett/expiration-date-utility/issues"
   },
-  "homepage": "https://github.com/michaellburchett/expiration-date-utility#readme"
+  "homepage": "https://github.com/michaellburchett/expiration-date-utility#readme",
+  "devDependencies": {
+    "mocha": "^9.1.3"
+  }
 }
