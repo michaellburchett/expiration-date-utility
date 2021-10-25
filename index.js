@@ -7,8 +7,7 @@
  */
 exports.getDateByDaysFromAnotherDate = function(dateTime, numberOfDaysAway) {
 
-    validateIsDate(dateTime);
-    validateNumberOfDaysAway(numberOfDaysAway);
+    validateGetDateByDaysFromAnotherDate(dateTime, numberOfDaysAway);
 
     dateTime.setDate(dateTime.getDate() + numberOfDaysAway);
 
@@ -22,9 +21,12 @@ exports.getDateByDaysFromAnotherDate = function(dateTime, numberOfDaysAway) {
  * @return {Number}
  */
 exports.getSecondsFromWhenDateBegins = function(fromDate) {
-  const difference = fromDate - Date.now();
 
-  return Math.round(difference / 1000);
+    validateIsInstanceOf(fromDate, Date);
+
+    const difference = fromDate - Date.now();
+
+    return Math.round(difference / 1000);
 };
 
 /**
@@ -34,32 +36,69 @@ exports.getSecondsFromWhenDateBegins = function(fromDate) {
  * @return {Boolean}
  */
 exports.getIsDateAfterToday = function(date) {
-  const expiresInSeconds = getSecondsFromWhenDateBegins(date);
 
-  return (expiresInSeconds<=0);
+    validateIsInstanceOf(date, Date);
+
+    const expiresInSeconds = getSecondsFromWhenDateBegins(date);
+
+    return (expiresInSeconds<=0);
 };
 
-function validateIsDate(date) {
+/**
+ * Validates the getDateByDaysFromAnotherDate function, as these had a lot of validation tasks
+ *
+ * @param {Date} dateTime This is the start date
+ * @param {Number} numberOfDaysAway This is the number of days a user wants to add to or subtract from the date
+ */
+function validateGetDateByDaysFromAnotherDate (dateTime, numberOfDaysAway) {
 
-    if(!date instanceof Date){
-        throw new Error('You must give a valid date');
+    validateIsInstanceOf(dateTime, Date);
+
+    validateIsInstanceOf(numberOfDaysAway, Number);
+
+    validateNumberIsWhole(numberOfDaysAway);
+
+    validateNumberIsBetweenMinAndMax(numberOfDaysAway, -100000000, 100000000);
+}
+
+/**
+ * Takes a number and validates that it is a whole number
+ *
+ * @param {Number} number This is the number to validate
+ * @throws
+ */
+function validateNumberIsWhole(number) {
+
+    if ((number - Math.floor(number)) !== 0) {
+        throw new Error(`You must give a whole number`);
     }
 }
 
-function validateNumberOfDaysAway(number) {
+/**
+ * Takes a number and validates that it is between a given min and max
+ *
+ * @param {Number} number This is the number to validate
+ * @param {Number} min This is the lower bound number that this can be
+ * @param {Number} max This is the upper bound number that this can be
+ * @throws
+ */
+function validateNumberIsBetweenMinAndMax(number, min, max) {
 
-    //Validate that it is a number
-    if (isNaN(number)) {
-        throw new Error('You must give a whole number between -100,000,000 and 100,000,000 for the second argument');
+    if (number > max || number < min) {
+        throw new Error(`You must give a number between ${min} and ${max}`);
     }
+}
 
-    //Validate that it is a whole number
-    if((number - Math.floor(number)) !== 0) {
-        throw new Error('You must give a whole number between -100,000,000 and 100,000,000 for the second argument');
-    }
+/**
+ * Takes an entity that you would like to validate that it is a certain type
+ *
+ * @param entity This is the entity that you would like to validate
+ * @param type This is the type that you re validating against
+ * @throws
+ */
+function validateIsInstanceOf(entity, type) {
 
-    //Validate that it is between -100,000,000 and 100,000,000
-    if (number > 100000000 || number < -100000000) {
-        throw new Error('You must give a whole number between -100,000,000 and 100,000,000 for the second argument');
+    if(!entity instanceof type){
+        throw new Error(`You must give a valid ${type}`);
     }
 }
