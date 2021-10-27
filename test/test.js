@@ -7,6 +7,7 @@ describe('Test Date Utilities', function() {
     describe('get date by days from another date in the future', function() {
         it('should get a date based on another date and days in the future', function() {
             const date = new Date('August 19, 1975 23:15:30');
+
             const expectedExpirationDate = new Date('November 17, 1975 23:15:30');
 
             const expirationDate = expiration.getDateByDaysFromAnotherDate(date, 90);
@@ -18,6 +19,7 @@ describe('Test Date Utilities', function() {
     describe('get date by days from another date in the past', function() {
         it('should get a date based on another date and days in the past', function() {
             const date = new Date('August 19, 1975 23:15:30');
+
             const expectedExpirationDate = new Date('August 17, 1975 23:15:30');
 
             const expirationDate = expiration.getDateByDaysFromAnotherDate(date, -2);
@@ -77,11 +79,22 @@ describe('Test Date Utilities', function() {
     describe('getExpiresInSeconds', function() {
         it('should set an appropriate expires in seconds, given an expiration date', function() {
             const date = new Date();
+
             date.setDate(date.getDate() + 90);
 
             const expires_in_seconds = expiration.getSecondsFromWhenDateBegins(date);
 
             assert.equal(expires_in_seconds, 7779600);
+        });
+    });
+
+    describe('getIsDateAfterNow', function() {
+        it('should take a date and return true if it is after now', function() {
+            const date = new Date();
+
+            date.setDate(date.getDate() + 1);
+
+            assert(expiration.getIsDateAfterNow(date));
         });
     });
 });

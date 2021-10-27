@@ -15,6 +15,21 @@ exports.getDateByDaysFromAnotherDate = function(dateTime, numberOfDaysAway) {
 };
 
 /**
+ * Takes a date and lets a user know if that date is after now or not
+ *
+ * @param {Date} date This is the date to assess
+ * @return {Boolean}
+ */
+exports.getIsDateAfterNow = function(date) {
+
+    validateIsInstanceOf(date, Date);
+
+    const expiresInSeconds = this.getSecondsFromWhenDateBegins(date);
+
+    return (expiresInSeconds>=0);
+};
+
+/**
  * Takes a date and a tells user how many seconds between now and when that date begins or began
  *
  * @param {Date} fromDate This is the date to assess
@@ -27,21 +42,6 @@ exports.getSecondsFromWhenDateBegins = function(fromDate) {
     const difference = fromDate - Date.now();
 
     return Math.round(difference / 1000);
-};
-
-/**
- * Takes a date and lets a user know if that date is after today or not
- *
- * @param {Date} date This is the date to assess
- * @return {Boolean}
- */
-exports.getIsDateAfterToday = function(date) {
-
-    validateIsInstanceOf(date, Date);
-
-    const expiresInSeconds = getSecondsFromWhenDateBegins(date);
-
-    return (expiresInSeconds<=0);
 };
 
 /**
@@ -97,7 +97,7 @@ function validateNumberIsBetweenMinAndMax(number, min, max) {
  * @throws
  */
 function validateIsInstanceOf(entity, type) {
-
+    
     if(!entity instanceof type){
         throw new Error(`You must give a valid ${type}`);
     }
