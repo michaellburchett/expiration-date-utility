@@ -10,7 +10,7 @@ describe('Test Date Utilities', function() {
 
             const expectedExpirationDate = new Date('November 17, 1975 23:15:30');
 
-            const expirationDate = expiration.getDateByDaysFromAnotherDate(date, 90);
+            const expirationDate = expiration.setExpirationDate(date, 90);
 
             assert.equal(expirationDate.toString(), expectedExpirationDate.toString());
         });
@@ -22,7 +22,7 @@ describe('Test Date Utilities', function() {
 
             const expectedExpirationDate = new Date('August 17, 1975 23:15:30');
 
-            const expirationDate = expiration.getDateByDaysFromAnotherDate(date, -2);
+            const expirationDate = expiration.setExpirationDate(date, -2);
 
             assert.equal(expirationDate.toString(), expectedExpirationDate.toString());
         });
@@ -31,7 +31,7 @@ describe('Test Date Utilities', function() {
     describe('get date by days from another date throws error if date not given', function() {
         it('should not get a date based on another date and days if the date is not a date', function() {
             assert.throws(
-                () => expiration.getDateByDaysFromAnotherDate("not a date", 90)
+                () => expiration.setExpirationDate("not a date", 90)
             );
         });
     });
@@ -41,7 +41,7 @@ describe('Test Date Utilities', function() {
             const date = new Date('August 19, 1975 23:15:30');
 
             assert.throws(
-                () => expiration.getDateByDaysFromAnotherDate(date, 90.3463456734573457567345)
+                () => expiration.setExpirationDate(date, 90.3463456734573457567345)
             );
         });
     });
@@ -51,7 +51,7 @@ describe('Test Date Utilities', function() {
             const date = new Date('August 19, 1975 23:15:30');
 
             assert.throws(
-                () => expiration.getDateByDaysFromAnotherDate(date, -2.964563453453)
+                () => expiration.setExpirationDate(date, -2.964563453453)
             );
         });
     });
@@ -61,7 +61,7 @@ describe('Test Date Utilities', function() {
             const date = new Date('August 19, 1975 23:15:30');
 
             assert.throws(
-                () => expiration.getDateByDaysFromAnotherDate(date, "ninety")
+                () => expiration.setExpirationDate(date, "ninety")
             );
         });
     });
@@ -71,30 +71,56 @@ describe('Test Date Utilities', function() {
             const date = new Date('August 19, 1975 23:15:30');
 
             assert.throws(
-                () => expiration.getDateByDaysFromAnotherDate(date, 100000001)
+                () => expiration.setExpirationDate(date, 100000001)
             );
         });
     });
 
-    describe('getExpiresInSeconds', function() {
-        it('should set an appropriate expires in seconds, given an expiration date', function() {
+    describe('getIsExpiredByDateFalse', function() {
+        it('should tell us if something is expired by giving an expiration date', function() {
             const date = new Date();
 
-            date.setDate(date.getDate() + 90);
+            date.setDate(date.getDate() - 2);
 
-            const expires_in_seconds = expiration.getSecondsFromWhenDateBegins(date);
+            const isExpired = expiration.getIsExpiredByDate(date);
 
-            assert.equal(expires_in_seconds, 7779600);
+            assert.equal(isExpired, true);
         });
     });
 
-    describe('getIsDateAfterNow', function() {
-        it('should take a date and return true if it is after now', function() {
+    describe('getIsExpiredByDateFalse', function() {
+        it('should tell us if something is not expired by giving an expiration date', function() {
             const date = new Date();
 
-            date.setDate(date.getDate() + 1);
+            date.setDate(date.getDate() + 2);
 
-            assert(expiration.getIsDateAfterNow(date));
+            const isExpired = expiration.getIsExpiredByDate(date);
+
+            assert.equal(isExpired, false);
+        });
+    });
+
+    describe('getIsExpiredBySeconds', function() {
+        it('should tell us if something is expired by giving seconds remaining', function() {
+            const isExpired = expiration.getIsExpiredBySeconds(1);
+
+            assert.equal(isExpired, false);
+        });
+    });
+
+    describe('getIsExpiredBySeconds', function() {
+        it('should tell us if something is expired by giving seconds remaining', function() {
+            const isExpired = expiration.getIsExpiredBySeconds(0);
+
+            assert.equal(isExpired, true);
+        });
+    });
+
+    describe('getIsExpiredBySeconds', function() {
+        it('should tell us if something is expired by giving seconds remaining', function() {
+            const isExpired = expiration.getIsExpiredBySeconds(-1);
+
+            assert.equal(isExpired, true);
         });
     });
 });

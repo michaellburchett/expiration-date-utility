@@ -1,47 +1,56 @@
+'use strict';
+
 /**
- * Takes a date and a number and gives users a new date that is that number of days in the future or past
+ * Takes a date and a number and return a new date that is that number of days in the future
  *
- * @param {Date} dateTime This is the start date
- * @param {Number} numberOfDaysAway This is the number of days a user wants to add to or subtract from the date
+ * @param {Date} startDateTime This is the start date
+ * @param {Integer} numberOfDaysUntilExpiration This is the number of days a user wants to add to the date
  * @return {Date}
  */
-exports.getDateByDaysFromAnotherDate = function(dateTime, numberOfDaysAway) {
+exports.setExpirationDate = function(startDateTime, numberOfDaysUntilExpiration) {
 
-    validateGetDateByDaysFromAnotherDate(dateTime, numberOfDaysAway);
+    validateGetDateByDaysFromAnotherDate(startDateTime, numberOfDaysUntilExpiration);
 
-    dateTime.setDate(dateTime.getDate() + numberOfDaysAway);
+    startDateTime.setDate(startDateTime.getDate() + numberOfDaysUntilExpiration);
 
-    return dateTime;
+    return startDateTime;
 };
 
 /**
- * Takes a date and lets a user know if that date is after now or not
+ * Takes a date and a tells user how many seconds are remaining before that date is hit
  *
- * @param {Date} date This is the date to assess
- * @return {Boolean}
+ * @param {Date} expirationDate This is the date to assess
+ * @return {Integer}
  */
-exports.getIsDateAfterNow = function(date) {
+exports.getSecondsRemaining = function(expirationDate) {
 
-    validateIsInstanceOf(date, Date);
+    validateIsInstanceOf(expirationDate, Date);
 
-    const expiresInSeconds = this.getSecondsFromWhenDateBegins(date);
-
-    return (expiresInSeconds>=0);
-};
-
-/**
- * Takes a date and a tells user how many seconds between now and when that date begins or began
- *
- * @param {Date} fromDate This is the date to assess
- * @return {Number}
- */
-exports.getSecondsFromWhenDateBegins = function(fromDate) {
-
-    validateIsInstanceOf(fromDate, Date);
-
-    const difference = fromDate - Date.now();
+    const difference = expirationDate - Date.now();
 
     return Math.round(difference / 1000);
+};
+
+/**
+* Takes a date and lets a user know if that date is after today or not
+*
+* @param {Date} expirationDate This is the date to assess
+* @return {Boolean}
+*/
+exports.getIsExpiredByDate = function(expirationDate) {
+    const expiresInSeconds = this.getSecondsRemaining(expirationDate);
+
+    return this.getIsExpiredBySeconds(expiresInSeconds);
+};
+
+/**
+* Returns true if there are no seconds left before expiration
+*
+* @param {Integer} expiresInSeconds This is the number to assess
+* @return {Boolean}
+*/
+exports.getIsExpiredBySeconds = function(expiresInSeconds) {
+    return (expiresInSeconds<=0);
 };
 
 /**
