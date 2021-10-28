@@ -97,7 +97,7 @@ function validateNumberIsBetweenMinAndMax(number, min, max) {
  * @throws
  */
 function validateIsInstanceOf(entity, type) {
-    
+
     if(!entity instanceof type){
         throw new Error(`You must give a valid ${type}`);
     }
